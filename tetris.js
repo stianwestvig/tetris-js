@@ -2,31 +2,32 @@ const canvas = document.querySelector('#tetris')
 const scoreElement = document.querySelector('#score')
 const ctx = canvas.getContext('2d')
 
-const ROWS = 20
-const COLUMNS = 10
-const SQ = squareSize = 20
+const BOARD_ROWS = 20
+const BOARD_COLUMNS = 10
+const SQUARE = SQUAREuareSize = 20
 const VACANT = 'white'
 
-function drawSquare (x, y, color) {
+function drawSQUAREuare (x, y, color) {
   ctx.fillStyle = color
-  ctx.fillRect(x*SQ, y*SQ, SQ, SQ)
+  ctx.fillRect(x*SQUARE, y*SQUARE, SQUARE, SQUARE)
   ctx.strokeStyle = 'black'
-  ctx.strokeRect(x*SQ, y*SQ, SQ, SQ)
+  ctx.strokeRect(x*SQUARE, y*SQUARE, SQUARE, SQUARE)
 }
 
 let score = 0
 let board = []
-for (row = 0; row < ROWS; row++) {
+
+for (row = 0; row < BOARD_ROWS; row++) {
   board[row] = []
-  for (col = 0; col < COLUMNS; col++) {
+  for (col = 0; col < BOARD_COLUMNS; col++) {
     board[row][col] = VACANT
   }
 }
 
 function drawBoard () {
-  for (row = 0; row < ROWS; row++) {
-    for (col = 0; col < COLUMNS; col++) {
-      drawSquare(col, row, board[row][col])
+  for (row = 0; row < BOARD_ROWS; row++) {
+    for (col = 0; col < BOARD_COLUMNS; col++) {
+      drawSQUAREuare(col, row, board[row][col])
     }
   }
 }
@@ -65,7 +66,7 @@ Piece.prototype.fill = function (color) {
   for (row = 0; row < this.activeTetromino.length; row++) {
     for (col = 0; col < this.activeTetromino.length; col++) {
       if (this.activeTetromino[row][col]) {
-        drawSquare(this.x + col, this.y + row, color)
+        drawSQUAREuare(this.x + col, this.y + row, color)
       }
     }
   }
@@ -118,7 +119,7 @@ Piece.prototype.rotate = function () {
   let kick = 0
 
   if (this.collision(0, 0, nextPattern)) {
-    if (this.x > COLUMNS / 2) {
+    if (this.x > BOARD_COLUMNS / 2) {
       kick = -1
     } else {
       kick = 1
@@ -151,21 +152,19 @@ Piece.prototype.lock = function () {
     }
   }
 
-  for (row = 0; row < ROWS; row++) {
+  for (row = 0; row < BOARD_ROWS; row++) {
     let isRowFull = true
-    for (col = 0; col < COLUMNS; col++) {
-      console.log('rowIsFull', isRowFull && (board[row][col] != VACANT))
+    for (col = 0; col < BOARD_COLUMNS; col++) {
       isRowFull = isRowFull && (board[row][col] != VACANT)
     }
     if (isRowFull) {
-      console.log('rowIsFull')
       for (y = row; y > 1; y--) {
-        for (col = 0; col < COLUMNS; col++) {
+        for (col = 0; col < BOARD_COLUMNS; col++) {
           board[y][col] = board[y-1][col]
         }
       }
 
-      for (col = 0; col < COLUMNS; col++) {
+      for (col = 0; col < BOARD_COLUMNS; col++) {
         board[0][col] = VACANT
       }
 
@@ -186,7 +185,7 @@ Piece.prototype.collision = function (x, y, piece) {
       let futureX = this.x + col + x
       let futureY = this.y + row + y
 
-      if (futureX < 0 || futureX >= COLUMNS || futureY >= ROWS) {
+      if (futureX < 0 || futureX >= BOARD_COLUMNS || futureY >= BOARD_ROWS) {
         return true
       }
 
