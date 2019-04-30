@@ -1,0 +1,56 @@
+body { margin: 0; background-color: #43464B; }
+
+#score {
+  display: inline-block;
+}
+
+#gameover {
+  position: absolute;
+  top: 200px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding: 20px;
+  background-color: rgba(143,101,147,0.9);
+}
+
+#gameover p {
+  font-size: 40px;
+}
+
+p, button {
+  color: white;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 25px;
+}
+
+button {
+  padding: 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3D2B56;
+}
+
+button:active, button:focus {
+  border: 3px solid black;
+  padding: 17px;
+  outline: none;
+}
+
+button:hover {
+  background-color: #301E49;
+}
+
+div {
+  text-align: center;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+}
+
+.hide {
+  display: none;
+}
