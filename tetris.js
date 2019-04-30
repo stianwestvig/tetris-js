@@ -9,6 +9,7 @@ const START_SPEED = 1000
 const SPEED_DECREMENT = 100
 
 const canvas = init(BOARD_ROWS, BOARD_COLUMNS, SQUARE)
+const bodyElement = document.querySelector('body')
 const scoreElement = document.querySelector('#score')
 const levelElement = document.querySelector('#level')
 const gameoverElement = document.querySelector('#gameover')
@@ -50,6 +51,7 @@ function handleNewGame () {
 
   scoreElement.innerHTML = score
   gameoverElement.classList.add('hide')
+  bodyElement.className = ''
   drop()
 }
 
@@ -188,7 +190,10 @@ Piece.prototype.moveDown = function () {
       nextPiece.draw()
 
       difficulty = adjustDifficulty(Date.now() - runTime)
-      levelElement.innerHTML = (START_SPEED - difficulty) / 100
+      const level = (START_SPEED - difficulty) / 100
+      levelElement.innerHTML = level
+      bodyElement.classList.add(`level-${level}`)
+      bodyElement.classList.remove(`level-${level-1}`)
     }
   }
 }
@@ -304,7 +309,6 @@ let gameOver = true
 function drop () {
   let now = Date.now()
   let delta = now - dropStart
-  // console.log('drop', difficulty, runTime, dropStart)
 
   if (delta > difficulty) {
     p.moveDown()
