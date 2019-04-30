@@ -1,4 +1,10 @@
-body { margin: 0; background-color: #43464B; }
+body {
+  margin: 0;
+  background: #FF4E50;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #F9D423, #FF4E50);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #F9D423, #FF4E50); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
 
 #score {
   display: inline-block;
@@ -11,7 +17,11 @@ body { margin: 0; background-color: #43464B; }
   right: 0;
   margin: auto;
   padding: 20px;
-  background-color: rgba(143,101,147,0.9);
+  background: #24C6DC;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #514A9D, #24C6DC);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #514A9D, #24C6DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
 }
 
 #gameover p {
@@ -50,6 +60,7 @@ div {
 canvas {
   display: block;
   margin: 0 auto;
+  margin-top: 20px;
 }
 
 .hide {

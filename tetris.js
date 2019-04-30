@@ -1,5 +1,7 @@
 const BOARD_ROWS = 20
 const BOARD_COLUMNS = 10
+const SIDEBOARD_ROWS = 4
+const SIDEBOARD_COLUMNS = 5
 const SQUARE = 40
 const VACANT = 'white'
 const BORDER = '#43464B'
@@ -14,17 +16,19 @@ document.addEventListener('keydown', handleInput)
 newGameButton.addEventListener('click', handleNewGame)
 
 function handleInput (event) {
-  if (event.keyCode == 37) {
-    p.moveLeft()
-    dropStart = Date.now()
-  } else if (event.keyCode == 38) {
-    p.rotate()
-    dropStart = Date.now()
-  } else if (event.keyCode == 39) {
-    p.moveRight()
-    dropStart = Date.now()
-  } else if (event.keyCode == 40) {
-    p.moveDown()
+  if(!gameOver) {
+    if (event.keyCode == 37) {
+      p.moveLeft()
+      dropStart = Date.now()
+    } else if (event.keyCode == 38) {
+      p.rotate()
+      dropStart = Date.now()
+    } else if (event.keyCode == 39) {
+      p.moveRight()
+      dropStart = Date.now()
+    } else if (event.keyCode == 40) {
+      p.moveDown()
+    }
   }
 }
 
@@ -33,11 +37,15 @@ function handleNewGame () {
   gameOver = false
   emptyBoard()
   drawBoard()
-  drop()
+  drawSideBoard()
+  
   p = randomPiece()
   nextPiece = randomPiece()
+  nextPiece.draw()
+
   scoreElement.innerHTML = score
   gameoverElement.classList.add('hide')
+  drop()
 }
 
 const pieces = [
@@ -50,8 +58,8 @@ const pieces = [
   [J, '#FE7F2D']
 ]
 
-let nextPiece = randomPiece()
-let p = nextPiece
+let nextPiece
+let p
 
 let score = 0
 let board = []
@@ -69,7 +77,7 @@ function emptyBoard () {
 function init (rows, cols, square) {
   const canvas = document.querySelector('#tetris')
 
-  canvas.width = cols * square
+  canvas.width = (cols * square) + (SIDEBOARD_COLUMNS + 2) * square
   canvas.height = rows * square
 
   return canvas
@@ -90,7 +98,17 @@ function drawBoard () {
   }
 }
 
+function drawSideBoard () {
+  const offset = 2
+  for (row = 0; row < (SIDEBOARD_ROWS); row++) {
+    for (col = BOARD_COLUMNS+offset; col < (BOARD_COLUMNS+SIDEBOARD_COLUMNS+offset); col++) {
+      drawSquare(col, row, VACANT)
+    }
+  }
+}
+
 drawBoard()
+drawSideBoard()
 
 function randomPiece () {
   let random = Math.floor(Math.random() * pieces.length)
@@ -104,8 +122,14 @@ function Piece (tetromino, color) {
   this.tetrominoIndex = 0
   this.activeTetromino = this.tetromino[this.tetrominoIndex]
 
-  this.x = 3
-  this.y = -2
+  this.x = 13
+  this.y = 1
+
+  if (this.activeTetromino[0].length > 3) {
+    this.x = 12
+    this.y = 0
+  }
+  
 }
 
 Piece.prototype.fill = function (color) {
@@ -135,8 +159,13 @@ Piece.prototype.moveDown = function () {
     // lock piece and make new piece
     this.lock()
     p = nextPiece
-    nextPiece = randomPiece()
-    console.log(nextPiece.color)
+    p.x = 3
+    p.y = -2
+    
+    if (!gameOver) {
+      nextPiece = randomPiece()
+      nextPiece.draw()
+    }
   }
 }
 
@@ -215,6 +244,7 @@ Piece.prototype.lock = function () {
     }
   }
   drawBoard()
+  drawSideBoard()
   scoreElement.innerHTML = score
 }
 
