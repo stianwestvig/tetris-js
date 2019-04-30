@@ -5,9 +5,12 @@ const SIDEBOARD_COLUMNS = 5
 const SQUARE = 40
 const VACANT = 'white'
 const BORDER = '#43464B'
+const START_SPEED = 1000
+const SPEED_DECREMENT = 100
 
 const canvas = init(BOARD_ROWS, BOARD_COLUMNS, SQUARE)
 const scoreElement = document.querySelector('#score')
+const levelElement = document.querySelector('#level')
 const gameoverElement = document.querySelector('#gameover')
 const newGameButton = gameoverElement.querySelector('button')
 const ctx = canvas.getContext('2d')
@@ -33,6 +36,8 @@ function handleInput (event) {
 }
 
 function handleNewGame () {
+  runTime = Date.now()
+  difficulty = START_SPEED
   score = 0
   gameOver = false
   emptyBoard()
@@ -60,6 +65,8 @@ const pieces = [
 
 let nextPiece
 let p
+let difficulty
+let runTime
 
 let score = 0
 let board = []
@@ -81,6 +88,20 @@ function init (rows, cols, square) {
   canvas.height = rows * square
 
   return canvas
+}
+
+function adjustDifficulty (runTime) {
+  if (runTime <= 10000) { return START_SPEED }
+  if (runTime > 10000 && runTime <= 20000) { return START_SPEED - SPEED_DECREMENT }
+  else if (runTime > 20000 && runTime <= 30000) { return START_SPEED - 2*SPEED_DECREMENT }
+  else if (runTime > 30000 && runTime <= 40000) { return START_SPEED - 3*SPEED_DECREMENT }
+  else if (runTime > 40000 && runTime <= 50000) { return START_SPEED - 4*SPEED_DECREMENT }
+  else if (runTime > 50000 && runTime <= 60000) { return START_SPEED - 5*SPEED_DECREMENT }
+  else if (runTime > 60000 && runTime <= 70000) { return START_SPEED - 6*SPEED_DECREMENT }
+  else if (runTime > 70000 && runTime <= 80000) { return START_SPEED - 7*SPEED_DECREMENT }
+  else if (runTime > 80000 && runTime <= 100000) { return START_SPEED - 8*SPEED_DECREMENT }
+  else if (runTime > 100000 && runTime <= 110000) { return START_SPEED - 9*SPEED_DECREMENT }
+  else if (runTime >= 110000) { return difficulty }
 }
 
 function drawSquare (x, y, color) {
@@ -165,6 +186,9 @@ Piece.prototype.moveDown = function () {
     if (!gameOver) {
       nextPiece = randomPiece()
       nextPiece.draw()
+
+      difficulty = adjustDifficulty(Date.now() - runTime)
+      levelElement.innerHTML = (START_SPEED - difficulty) / 100
     }
   }
 }
@@ -280,8 +304,9 @@ let gameOver = true
 function drop () {
   let now = Date.now()
   let delta = now - dropStart
+  // console.log('drop', difficulty, runTime, dropStart)
 
-  if (delta > 1000) {
+  if (delta > difficulty) {
     p.moveDown()
     dropStart = Date.now()
   }

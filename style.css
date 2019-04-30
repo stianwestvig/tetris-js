@@ -10,6 +10,12 @@ body {
   display: inline-block;
 }
 
+#gui {
+  position: absolute;
+  top: 250px;
+  left: calc(50% + 150px)
+}
+
 #gameover {
   position: absolute;
   top: 200px;
