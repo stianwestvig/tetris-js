@@ -27,6 +27,7 @@ p, button {
 
 button {
   padding: 20px;
+  margin-bottom: 40px;
   border: none;
   border-radius: 5px;
   background-color: #3D2B56;

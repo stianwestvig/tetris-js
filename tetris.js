@@ -33,7 +33,9 @@ function handleNewGame () {
   gameOver = false
   emptyBoard()
   drawBoard()
+  drop()
   p = randomPiece()
+  nextPiece = randomPiece()
   scoreElement.innerHTML = score
   gameoverElement.classList.add('hide')
 }
@@ -44,10 +46,12 @@ const pieces = [
   [T, '#2E5EAA'],
   [O, '#8F6593'],
   [L, '#3D2B56'],
-  [I, '#D7BE82'],
+  [I, '#D72638'],
   [J, '#FE7F2D']
 ]
-let p = randomPiece()
+
+let nextPiece = randomPiece()
+let p = nextPiece
 
 let score = 0
 let board = []
@@ -130,7 +134,9 @@ Piece.prototype.moveDown = function () {
   } else {
     // lock piece and make new piece
     this.lock()
-    p = randomPiece()
+    p = nextPiece
+    nextPiece = randomPiece()
+    console.log(nextPiece.color)
   }
 }
 
@@ -254,6 +260,4 @@ function drop () {
     requestAnimationFrame(drop)
   }
 }
-
-drop()
 
