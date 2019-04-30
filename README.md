@@ -2,6 +2,6 @@
 
 The Tetris game, created using JavaScript, and The HTML5 canvas.
 
-Download the starter template, and follow the tutorial on youtube step by step.
+Based on a tutorial and improved from there.
 
 Tutorial link : https://www.youtube.com/watch?v=HEsAr2Yt2do
